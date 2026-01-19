@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#8B4513">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Coming Soon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -169,5 +172,67 @@
         <h1>COMING SOON</h1>
         <p class="eta">ETA - FEB 26</p>
     </div>
+    <script>
+        // Extract dominant color from video and update theme-color
+        const video = document.querySelector('.video-background');
+        const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+        
+        function updateThemeColor() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 100;
+            canvas.height = 100;
+            
+            try {
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+                
+                // Sample colors from the center area of the video
+                let r = 0, g = 0, b = 0, count = 0;
+                const startX = Math.floor(canvas.width * 0.3);
+                const endX = Math.floor(canvas.width * 0.7);
+                const startY = Math.floor(canvas.height * 0.3);
+                const endY = Math.floor(canvas.height * 0.7);
+                
+                for (let y = startY; y < endY; y++) {
+                    for (let x = startX; x < endX; x++) {
+                        const index = (y * canvas.width + x) * 4;
+                        r += data[index];
+                        g += data[index + 1];
+                        b += data[index + 2];
+                        count++;
+                    }
+                }
+                
+                if (count > 0) {
+                    r = Math.floor(r / count);
+                    g = Math.floor(g / count);
+                    b = Math.floor(b / count);
+                    
+                    // Darken the color slightly for better contrast in browser UI
+                    r = Math.floor(r * 0.7);
+                    g = Math.floor(g * 0.7);
+                    b = Math.floor(b * 0.7);
+                    
+                    const color = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+                    themeColorMeta.setAttribute('content', color);
+                }
+            } catch (e) {
+                // Fallback if video isn't ready
+                console.log('Video not ready for color extraction');
+            }
+        }
+        
+        // Update theme color when video starts playing
+        video.addEventListener('loadeddata', () => {
+            setTimeout(updateThemeColor, 500);
+        });
+        
+        // Update periodically to match video changes
+        video.addEventListener('play', () => {
+            setInterval(updateThemeColor, 2000);
+        });
+    </script>
 </body>
 </html>
