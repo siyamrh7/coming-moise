@@ -43,6 +43,7 @@
             width: 100%;
             position: relative;
             z-index: 1;
+            animation: fadeInUp 1s ease-out;
         }
 
         .logo {
@@ -50,6 +51,14 @@
             width: 100%;
             height: auto;
             margin-bottom: 2rem;
+            filter: drop-shadow(0 10px 30px rgba(169, 90, 33, 0.4)) 
+                    drop-shadow(0 5px 15px rgba(169, 90, 33, 0.3));
+            animation: logoFloat 3s ease-in-out infinite, fadeIn 1.2s ease-out;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
         }
 
         h1 {
@@ -58,17 +67,93 @@
             letter-spacing: 0.05em;
             margin-bottom: 2rem;
             line-height: 1.1;
+            text-shadow: 
+                0 0 20px rgba(169, 90, 33, 0.5),
+                0 0 40px rgba(169, 90, 33, 0.3),
+                0 4px 8px rgba(0, 0, 0, 0.3),
+                0 8px 16px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 1s ease-out 0.2s both, textGlow 3s ease-in-out infinite;
         }
 
         .eta {
-            font-size: clamp(1.25rem, 3vw, 2rem);
+            font-size: clamp(1.5rem, 4vw, 2rem);
             font-weight: 400;
             letter-spacing: 0.02em;
-            opacity: 0.9;
+            opacity: 0.95;
+            text-shadow: 
+                0 0 15px rgba(169, 90, 33, 0.4),
+                0 0 30px rgba(169, 90, 33, 0.2),
+                0 2px 4px rgba(0, 0, 0, 0.3),
+                0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 1s ease-out 0.4s both, subtlePulse 4s ease-in-out infinite;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes logoFloat {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes textGlow {
+            0%, 100% {
+                text-shadow: 
+                    0 0 20px rgba(169, 90, 33, 0.5),
+                    0 0 40px rgba(169, 90, 33, 0.3),
+                    0 4px 8px rgba(0, 0, 0, 0.3),
+                    0 8px 16px rgba(0, 0, 0, 0.2);
+            }
+            50% {
+                text-shadow: 
+                    0 0 25px rgba(169, 90, 33, 0.6),
+                    0 0 50px rgba(169, 90, 33, 0.4),
+                    0 4px 8px rgba(0, 0, 0, 0.3),
+                    0 8px 16px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        @keyframes subtlePulse {
+            0%, 100% {
+                opacity: 0.95;
+            }
+            50% {
+                opacity: 1;
+            }
         }
 
         @media (max-width: 768px) {
             h1 {
+                margin-bottom: 1.5rem;
+            }
+
+            .eta {
+                font-size: clamp(1.5rem, 5vw, 2rem);
+            }
+
+            .logo {
+                max-width: 150px;
                 margin-bottom: 1.5rem;
             }
         }
